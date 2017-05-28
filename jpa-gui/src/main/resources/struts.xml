@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+    "http://struts.apache.org/dtds/struts-2.5.dtd">
+
+<struts>
+	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
+	<constant name="struts.devMode" value="true" />
+
+
+	<package name="base" extends="struts-default">
+		<result-types>
+			<result-type name="json" class="org.apache.struts2.json.JSONResult" />
+
+
+		</result-types>
+
+		<interceptors>
+			<interceptor name="handleDB"
+				class="org.rao.user.jpa_gui.interceptors.DBInterceptor" />
+			<interceptor-stack name="myStack">
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="handleDB" />
+			</interceptor-stack>
+		</interceptors>
+
+		<action name="prova" class="org.rao.user.jpa_gui.actions.Index" method="add">
+			<interceptor-ref name="myStack" />
+			<result name="success" type="json"></result>
+		</action>
+
+		<action name="select" class="org.rao.user.jpa_gui.actions.Index"
+			method="list">
+			<interceptor-ref name="myStack" />
+			<result name="success" type="json"><param name="root">allUsers</param></result>
+		</action>
+	</package>
+
+
+	<package name="data" extends="json-default" namespace="/data" />
+
+
+
+</struts>

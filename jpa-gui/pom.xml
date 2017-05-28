@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.rao.user</groupId>
+	<artifactId>jpa-gui</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+	<name>jpa-gui</name>
+
+	<properties>
+		<struts2.version>2.5.8</struts2.version>
+		<struts2-jquery.version>4.0.2</struts2-jquery.version>
+		<struts2-bootstrap.version>2.5.0</struts2-bootstrap.version>
+		<version.jboss.bom>10.1.0.Final</version.jboss.bom>
+	</properties>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.apache.struts</groupId>
+			<artifactId>struts2-core</artifactId>
+			<version>${struts2.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.struts</groupId>
+			<artifactId>struts2-convention-plugin</artifactId>
+			<version>${struts2.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.struts</groupId>
+			<artifactId>struts2-junit-plugin</artifactId>
+			<version>${struts2.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.struts</groupId>
+			<artifactId>struts2-json-plugin</artifactId>
+			<version>${struts2.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.jgeppert.struts2.jquery</groupId>
+			<artifactId>struts2-jquery-plugin</artifactId>
+			<version>${struts2-jquery.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.jgeppert.struts2.jquery</groupId>
+			<artifactId>struts2-jquery-grid-plugin</artifactId>
+			<version>${struts2-jquery.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.jgeppert.struts2.bootstrap</groupId>
+			<artifactId>struts2-bootstrap-plugin</artifactId>
+			<version>${struts2-bootstrap.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.5</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+
+
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.1</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.7</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.struts</groupId>
+			<artifactId>struts2-json-plugin</artifactId>
+			<version>${struts2.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.192</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>5.2.10.Final</version>
+		</dependency>
+
+		<!-- roba specifica di jboss -->
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.1-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.spec.javax.servlet</groupId>
+			<artifactId>jboss-servlet-api_3.1_spec</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+
+	</dependencies>
+	<repositories>
+		<repository>
+			<id>tech-preview</id>
+			<name>red hat enterprise repo</name>
+			<url>https://maven.repository.redhat.com/techpreview/all/</url>
+		</repository>
+	</repositories>
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>9.3.3.v20150827</version>
+				<configuration>
+					<stopKey>CTRL+C</stopKey>
+					<stopPort>8999</stopPort>
+					<scanIntervalSeconds>10</scanIntervalSeconds>
+					<webAppSourceDirectory>${basedir}/src/main/webapp/</webAppSourceDirectory>
+					<webAppConfig>
+						<descriptor>${basedir}/src/main/webapp/WEB-INF/web.xml</descriptor>
+					</webAppConfig>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<dependencyManagement>
+		<dependencies>
+			<!-- JBoss distributes a complete set of Java EE 7 APIs including a Bill 
+				of Materials (BOM). A BOM specifies the versions of a "stack" (or a collection) 
+				of artifacts. We use this here so that we always get the correct versions 
+				of artifacts. Here we use the jboss-javaee-7.0-with tools stack (you can 
+				read this as the JBoss stack of the Java EE 7 APIs, with some extras tools 
+				for your project, such as Arquillian for testing) -->
+			<dependency>
+				<groupId>org.wildfly.bom</groupId>
+				<artifactId>wildfly-javaee7-with-tools</artifactId>
+				<version>${version.jboss.bom}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>commons-lang</groupId>
+				<artifactId>commons-lang</artifactId>
+				<version>2.6</version>
+				<scope>compile</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+</project>
