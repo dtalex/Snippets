@@ -1,0 +1,2 @@
+--delete RemapField;
+--insert into RemapField (remapId, valueToRemap, remappedValue) values ('cazzoId','cazzo','minchia');
