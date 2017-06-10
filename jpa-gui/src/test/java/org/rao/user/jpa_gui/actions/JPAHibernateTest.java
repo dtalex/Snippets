@@ -3,6 +3,7 @@ package org.rao.user.jpa_gui.actions;
 import org.h2.tools.RunScript;
 import org.hibernate.Session;
 import org.hibernate.jdbc.Work;
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -24,25 +25,22 @@ public class JPAHibernateTest {
 
     @BeforeClass
     public static void init() throws FileNotFoundException, SQLException {
-    	DBProvider.getInstance();
-		DBProvider.beginTransaction();
+
     }
 
-//    @Before
-//    public void initializeDatabase(){
-//        Session session = em.unwrap(Session.class);
-//        session.doWork(new Work() {
-//            @Override
-//            public void execute(Connection connection) throws SQLException {
-//                try {
-//                    File script = new File(getClass().getResource("/data.sql").getFile());
-//                    RunScript.execute(connection, new FileReader(script));
-//                } catch (FileNotFoundException e) {
-//                    throw new RuntimeException("could not initialize with script");
-//                }
-//            }
-//        });
-//    }
+    @Before
+    public void initializeDatabase(){
+	System.setProperty("alt-ds", "primary-test");
+	DBProvider.getInstance();
+	DBProvider.beginTransaction();
+    }
+    
+    @After
+    public void quit(){
+    	DBProvider.rollback();
+    	DBProvider.closeEntityManager();
+    	DBProvider.destroy();
+    }
 
     @AfterClass
     public static void tearDown(){

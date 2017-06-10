@@ -1,5 +1,7 @@
 package org.rao.user.jpa_gui.db;
 
+import javax.persistence.CacheRetrieveMode;
+import javax.persistence.CacheStoreMode;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -8,9 +10,11 @@ import javax.persistence.Persistence;
 public class DBProvider {
 	private static DBProvider instance;
 	private EntityManagerFactory factory;
-
+	private static final ThreadLocal<EntityManager> threadLocalEm = new ThreadLocal<>();
+	
+	
 	private DBProvider() {
-		this.factory = Persistence.createEntityManagerFactory("primary");
+		this.factory = Persistence.createEntityManagerFactory(System.getProperty("alt-ds","primary"));
 	}
 
 	public static DBProvider getInstance() {
@@ -21,6 +25,7 @@ public class DBProvider {
 				}
 			}
 		}
+		
 		return instance;
 	}
 
@@ -31,24 +36,27 @@ public class DBProvider {
 		}
 	}
 
-	private static final ThreadLocal<EntityManager> threadLocal = new ThreadLocal<>();
+	
 
 	public static EntityManager getEntityManager() {
-		EntityManager em = threadLocal.get();
+		EntityManager em = threadLocalEm.get();
 
 		if (em == null) {
 			em= instance.factory.createEntityManager();
-			// set your flush mode here
-			threadLocal.set(em);
+			em.setProperty(
+				      "javax.persistence.cache.retrieveMode", CacheRetrieveMode.USE);
+			em.setProperty(
+				      "javax.persistence.cache.storeMode", CacheStoreMode.USE);
+			threadLocalEm.set(em);
 		}
 		return em;
 	}
 
 	public static void closeEntityManager() {
-		EntityManager em = threadLocal.get();
+		EntityManager em = threadLocalEm.get();
 		if (em != null) {
 			em.close();
-			threadLocal.set(null);
+			threadLocalEm.set(null);
 		}
 	}
 

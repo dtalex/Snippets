@@ -34,6 +34,18 @@
 			<interceptor-ref name="myStack" />
 			<result name="success" type="json"><param name="root">allUsers</param></result>
 		</action>
+		
+		<action name="readMetadata" class="org.rao.user.jpa_gui.actions.Index"
+			method="readMetadata">
+			<interceptor-ref name="myStack" />
+			<result name="success" type="json"><param name="root">remapField</param></result>
+		</action>
+		
+	<action name="listStatistics" class="org.rao.user.jpa_gui.actions.Index"
+			method="listStatistics">
+			<interceptor-ref name="myStack" />
+			<result name="success" type="json"><param name="root">cacheHits</param></result>
+		</action>
 	</package>
 
 
